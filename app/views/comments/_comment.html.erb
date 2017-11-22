@@ -1,0 +1,19 @@
+<li id="comment-<%= comment.id %>">
+  <% if comment.rate.nil?%>
+    <% rate = 0 %>
+  <% else %>
+    <% rate = comment.rate%>
+  <% end %>
+  <span style="font-size:<%=rate * 40%>%;color:yellow;">&starf;</span>
+  <%= link_to comment.user.name, comment.user%>
+  <%= comment.content %>
+  <% if comment.belongs_to?(current_user) %>
+      <a href="#" id="comment-edit-link-<%=comment.id%>">edit</a>
+      <div id="comment-form-<%= comment.id%>" class="hidden">
+        <%= render 'comments/form', comment: comment, post: comment.post %>
+      </div>
+  <% end %>
+  <span class="rating">
+    <span class="star-5">☆</span><span class="star-4">☆</span><span class="star-3">☆</span><span class="star-2">☆</span><span class="star-1">☆</span>
+  </span>
+</li>

@@ -1,0 +1,57 @@
+<ul class="comment-list">
+  <% comments.each do |comment| %>
+    <%= render 'comments/comment', comment: comment%>
+  <% end %>
+</ul>
+<div class="rate-form">
+  <%= form_for :rate, url: rates_path, html: {id: 'rate-form'} do |f| %>
+      <%= f.hidden_field :comment %>
+      <%= f.hidden_field :value %>
+  <% end %>
+</div>
+
+<style>
+  .rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+  }
+  .rating > span {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+  }
+  .rating > span:hover:before,
+  .rating > span:hover ~ span:before {
+    content: "\2605";
+    position: absolute;
+    color: yellow;
+  }
+  .yellow-star {
+    color: yellow;
+  }
+</style>
+
+<script>
+    $('[id^="comment-edit-link-"]').click(function() {
+      var id = $(this).attr('id');
+      var cmtId = id.replace('comment-edit-link-', '');
+      $('#comment-form-' + cmtId).removeClass('hidden');
+    });
+
+    $('[class^="star-"]').click(function() {
+        var cmtId = $(this).parent().parent().attr('id').replace('comment-', '');
+        var value = $(this).attr('class').replace('star-','');
+        console.log(cmtId, value);
+        $('#rate_comment').val(cmtId);
+        $('#rate_value').val(value);
+        $('#rate-form').submit();
+    });
+
+    <% comments.each do |comment| %>
+      <% if comment.rated_by_user(current_user) %>
+        <% for i in 1..comment.rated_by_user(current_user).value %>
+          $("#comment-<%= comment.id %> .rating .star-<%= i %>").addClass('yellow-star');
+        <% end %>
+      <% end %>
+    <% end %>
+</script>

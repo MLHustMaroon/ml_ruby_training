@@ -1,0 +1,11 @@
+<% if @posts.empty? %>
+    <p>no posts</p>
+    <%= link_to 'Create new issue', new_post_path %>
+<% else %>
+  <% @posts.each do |post| %>
+      <%= post.content %>
+      <%= link_to "#{post.comments.count} comments", post_path(post) %>
+      <%= link_to 'edit', edit_post_path(post) %>
+      <%= link_to 'delete', post_path(post), method: 'delete', data: {confirm: 'sure?'} %>
+  <% end %>
+<% end %>

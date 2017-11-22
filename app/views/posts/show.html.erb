@@ -1,0 +1,11 @@
+<div class="post-content">
+  <%= @post.content %>
+  <%= render 'comments/form', comment: @post.comments.new, post: @post %>
+  <div class="comments">
+    <%= render 'posts/comments', comments: @comments %>
+  </div>
+  <% if @post.belongs_to(current_user)%>
+    <p><%= link_to "edit", edit_post_path(@post) %></p>
+    <p><%= link_to "delete", post_path(@post), method: 'delete', data: {confirm: 'sure?'} %></p>
+  <% end %>
+</div>
